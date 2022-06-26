@@ -1,5 +1,3 @@
-import ZS_request from './ZS_RequestConfig'
+import zxjc_request from './zxjc_RequestConfig'
 
-export default {
-  ZS_request
-}
+export default zxjc_request

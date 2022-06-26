@@ -1,5 +1,11 @@
 <template>
   <div class="login-container">
+    <div class="title-container">
+      <h1 class="title">
+        <!-- <img src="@/assets/common/login-logo.png" alt=""> -->
+        四川病虫害在线监测系统
+      </h1>
+    </div>
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -8,13 +14,6 @@
       auto-complete="on"
       label-position="left"
     >
-      <div class="title-container">
-        <h1 class="title">
-          <!-- <img src="@/assets/common/login-logo.png" alt=""> -->
-          "掌上植保" 后台管理
-        </h1>
-      </div>
-
       <el-form-item prop="userName">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -36,7 +35,7 @@
         </span>
         <el-input
           :key="passwordType"
-          ref="password"
+          ref="passWord"
           v-model="loginForm.passWord"
           :type="passwordType"
           placeholder="密码"
@@ -51,7 +50,7 @@
       </el-form-item>
 
       <el-button
-        style="width:100%;margin-bottom:30px;"
+        style="width: 100%; margin-bottom: 30px"
         :loading="loading"
         type="success"
         class="loginBtn"
@@ -111,7 +110,7 @@ export default {
   },
   watch: {
     $route: {
-      handler: function(route) {
+      handler: function (route) {
         this.redirect = route.query && route.query.redirect
       },
       immediate: true
@@ -130,22 +129,11 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(async valid => {
+      this.$refs.loginForm.validate(async (valid) => {
         if (valid) {
-          try {
-            this.loading = true
-            // 只有校验通过了 我们才去调用action
-            await this['user/login'](this.loginForm)
-            // 应该登录成功之后
-            // async标记的函数实际上一个promise对象
-            // await下面的代码 都是成功执行的代码
-            this.$router.push('/')
-          } catch (error) {
-            console.log(error)
-          } finally {
-            //  不论执行try 还是catch  都去关闭转圈
-            this.loading = false
-          }
+          await this['user/login'](this.loginForm)
+          // 登录成功之后
+          this.$router.push('/')
         } else {
           console.log('error submit!!')
           return false
@@ -202,6 +190,7 @@ $cursor: #181a1b;
     background: $input_bg; // 输入登录表单的背景色
     border-radius: 5px;
     color: $input_text_color;
+    margin-bottom: 28px;
   }
   .el-form-item__error {
     color: #fff;
@@ -212,7 +201,7 @@ $cursor: #181a1b;
 <style lang="scss" scoped>
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
-$light_gray: #eee;
+$light_gray: #fff;
 
 .login-container {
   min-height: 100%;
@@ -221,10 +210,12 @@ $light_gray: #eee;
   overflow: hidden;
 
   .login-form {
+    background-color: #b2c8d1ad;
+    border-radius: 8px;
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 35px 35px 0;
     margin: 0 auto;
     overflow: hidden;
   }
@@ -251,6 +242,7 @@ $light_gray: #eee;
 
   .title-container {
     position: relative;
+    margin-top: 160px;
 
     .title {
       font-size: 50px;
@@ -273,9 +265,11 @@ $light_gray: #eee;
 
   .loginBtn {
     background: #2ebc4f;
-    height: 64px;
-    line-height: 32px;
+    padding: 0;
+    height: 46px;
+    line-height: 46px;
     font-size: 24px;
+    margin-top: 30px;
     &:hover {
       background: #278e3f;
     }

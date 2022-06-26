@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 10:01:33
- * @LastEditTime: 2021-08-24 10:03:29
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-26 14:18:52
+ * @LastEditors: ZiNanX-NTL 702668400@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \hrsaas\src\permission.js
  */
@@ -79,10 +79,10 @@ import 'nprogress/nprogress.css' // 引入进度条样式
 
 const whiteList = ['/login', '/404'] // 定义白名单  所有不受权限控制的页面
 // 路由的前置守卫
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   NProgress.start() // 开启进度条
   //  首先判断有无token
-  if (store.getters.token) {
+  if (store.getters.token && store.getters.token !== 'undefined') {
     //   如果有token 继续判断是不是去登录页
     if (to.path === '/login') {
       //  表示去的是登录页
@@ -91,8 +91,19 @@ router.beforeEach(async(to, from, next) => {
       if (!store.getters.userId) {
         // 如果没有id这个值 才会调用 vuex的获取资料的action
         await store.dispatch('user/getUserInfo')
+
+        const roles = ['admin']
+        // 生成基于角色访问路线地图
+        const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
+        // 动态添加访问路线
+        router.addRoutes(accessRoutes)
+
+        // 破解方法确保addRoutes完成
+        // 设置替换:所以导航不会留下历史记录
+        next({ ...to, replace: true })
+      } else {
+        next() // 放行
       }
-      next() // 放行
     }
   } else {
     // 如果没有token
@@ -106,6 +117,6 @@ router.beforeEach(async(to, from, next) => {
   NProgress.done() // 手动强制关闭一次  为了解决 手动切换地址时  进度条的不关闭的问题
 })
 // 后置守卫
-router.afterEach(function() {
+router.afterEach(function () {
   NProgress.done() // 关闭进度条
 })

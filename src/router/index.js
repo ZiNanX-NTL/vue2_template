@@ -1,16 +1,15 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 10:01:33
- * @LastEditTime: 2021-08-24 15:51:18
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-07 10:37:26
+ * @LastEditors: ZiNanX_NTL 702668400@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \hrsaas\src\router\index.js
  */
 import Vue from 'vue'
 import Router from 'vue-router'
 // 引入多个模块的规则
-import socialRouter from './modules/social'
-import userManagement from './modules/userManagement'
+import testRouter from './modules/test'
 
 Vue.use(Router)
 
@@ -44,38 +43,53 @@ import Layout from '@/layout'
 
 // 以后可能为动态路由
 export const asyncRoutes = [
-  socialRouter,
-  userManagement
+  testRouter,
+  // 404 page must be placed at the end !!!
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 export const constantRoutes = [
+  // 刷新页面过度路由
+  {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
   {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
+    hidden: true
+  },
+  {
+    path: '/home',
+    component: () => import('@/views/home/index'),
     hidden: true
   },
 
   {
     path: '/',
     component: Layout,
-    redirect: '/userManagement/pesticideUserManagement'
-  },
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+    redirect: '/home'
+  }
 ]
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes, ...asyncRoutes]
-})
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes
+  })
 
 const router = createRouter()
 

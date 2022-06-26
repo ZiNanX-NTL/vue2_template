@@ -17,26 +17,24 @@
       @toggleClick="toggleSideBar"
     />
 
-    <!-- <breadcrumb class="breadcrumb-container" /> -->
+    <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img v-imageerror="defaultImg" :src="staffPhoto" class="user-avatar" />
+          <img v-imageerror="defaultImg" :src="headUrl" class="user-avatar" />
           <span class="name">{{ name }}</span>
-          <i class="el-icon-caret-bottom" style="color:rgb(0, 0, 0)" />
+          <i class="el-icon-caret-bottom" style="color: rgb(0, 0, 0)" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              首页
-            </el-dropdown-item>
+          <router-link to="/home">
+            <el-dropdown-item> 首页 </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided @click.native="openEditPwdDialog">
-            <span style="display:block;">修改密码</span>
+            <span style="display: block">修改密码</span>
           </el-dropdown-item>
           <el-dropdown-item @click.native="logout">
-            <span style="display:block;">退出登录</span>
+            <span style="display: block">退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -90,13 +88,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-// import Breadcrumb from '@/components/Breadcrumb'
+import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import { updatePassword } from '@/api/user.js'
+import { updatePassword, loginOut } from '@/api/user.js'
 
 export default {
   components: {
-    // Breadcrumb,
+    Breadcrumb,
     Hamburger
   },
   data() {
@@ -138,7 +136,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sidebar', 'name', 'staffPhoto', 'userId']),
+    ...mapGetters(['sidebar', 'name', 'headUrl', 'userId']),
     ishorizontal() {
       const isHorizontal = this.$store.state.settings.pageLayout === 'horizontalLayout'
       if (isHorizontal) {
@@ -158,6 +156,7 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
+      await loginOut()
       await this.$store.dispatch('user/logout') // 这里不论写不写 await 登出方法都是同步的
       this.$router.push(`/login`) // 跳到登录
     },
@@ -169,12 +168,12 @@ export default {
     },
     // 修改密码
     editPwd() {
-      this.$refs.editForm.validate(boolean => {
+      this.$refs.editForm.validate((boolean) => {
         if (boolean) {
           updatePassword({
             id: this.userId,
             Password: this.editPwdForm.newPwd
-          }).then(res => {
+          }).then((res) => {
             this.$message({
               type: 'success',
               message: '修改成功，请使用新密码登录！'

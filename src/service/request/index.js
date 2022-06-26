@@ -26,7 +26,7 @@ class ZNRequest {
 
     // 2.所有实例请求拦截器使用
     this.instance.interceptors.request.use(
-      config => {
+      (config) => {
         console.log('所有实例,请求拦截成功')
         if (this.showLoading) {
           this.loading = Loading.service({
@@ -37,7 +37,7 @@ class ZNRequest {
         }
         return config
       },
-      err => {
+      (err) => {
         console.log('所有实例,请求拦截失败')
         return err
       }
@@ -45,7 +45,7 @@ class ZNRequest {
 
     // I. 所有实例响应拦截器使用
     this.instance.interceptors.response.use(
-      res => {
+      (res) => {
         console.log('所有实例,响应拦截成功')
 
         // 关闭loading
@@ -61,13 +61,14 @@ class ZNRequest {
         // }
         return data
       },
-      err => {
+      (err) => {
         console.log('所有实例,响应拦截失败')
 
         // 关闭loading
         this.loading?.close()
         // TODO: 判断不同的HttpErrorCode显示不同的错误信息
-        return err
+        // return err
+        return Promise.reject(err)
       }
     )
 
@@ -89,7 +90,7 @@ class ZNRequest {
 
       this.instance
         .request(config)
-        .then(res => {
+        .then((res) => {
           // III. 单个请求,响应拦截器使用
           if (config.interceptors?.responseInterceptor) {
             res = config.interceptors.responseInterceptor(res)
@@ -97,7 +98,7 @@ class ZNRequest {
           this.showLoading = this._showLoading ?? DEFAULT_LOADING
           resolve(res)
         })
-        .catch(err => {
+        .catch((err) => {
           this.showLoading = this._showLoading ?? DEFAULT_LOADING
           reject(err)
         })

@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-19 10:01:33
- * @LastEditTime: 2021-08-26 16:35:34
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-27 11:01:34
+ * @LastEditors: ZiNanX_NTL 702668400@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \hrsaas\src\layout\components\Sidebar\index.vue
 -->
@@ -22,7 +22,7 @@
           mode="vertical"
         >
           <sidebar-item
-            v-for="route in routes"
+            v-for="route in permission_routes"
             :key="route.path"
             :item="route"
             :base-path="route.path"
@@ -43,7 +43,7 @@
         mode="horizontal"
       >
         <sidebar-item
-          v-for="route in routes"
+          v-for="route in permission_routes"
           :key="route.path"
           :item="route"
           :base-path="route.path"
@@ -62,10 +62,7 @@ import variables from '@/styles/variables.scss'
 export default {
   components: { SidebarItem, Logo },
   computed: {
-    ...mapGetters(['sidebar']),
-    routes() {
-      return this.$router.options.routes
-    },
+    ...mapGetters(['permission_routes', 'sidebar']),
     activeMenu() {
       const route = this.$route
       const { meta, path } = route

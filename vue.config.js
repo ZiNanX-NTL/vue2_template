@@ -38,8 +38,8 @@ module.exports = {
     },
     // 设置代理
     proxy: {
-      [process.env.VUE_APP_BASE_API_ZS]: {
-        target: process.env.VUE_APP_TARGET_ZS, // 代理的地址
+      [process.env.VUE_APP_BASE_API]: {
+        target: process.env.VUE_APP_TARGET, // 代理的地址
         // target: 'http://192.168.124.53:9005/', // 代理的地址
         changeOrigin: true
       }
@@ -72,10 +72,7 @@ module.exports = {
     config.plugins.delete('prefetch')
 
     // set svg-sprite-loader
-    config.module
-      .rule('svg')
-      .exclude.add(resolve('src/icons'))
-      .end()
+    config.module.rule('svg').exclude.add(resolve('src/icons')).end()
     config.module
       .rule('icons')
       .test(/\.svg$/)
@@ -88,7 +85,7 @@ module.exports = {
       })
       .end()
 
-    config.when(process.env.NODE_ENV !== 'development', config => {
+    config.when(process.env.NODE_ENV !== 'development', (config) => {
       config
         .plugin('ScriptExtHtmlWebpackPlugin')
         .after('html')

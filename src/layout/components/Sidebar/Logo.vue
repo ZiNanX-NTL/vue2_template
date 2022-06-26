@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-19 10:01:33
- * @LastEditTime: 2021-10-27 17:18:27
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-06 17:01:28
+ * @LastEditors: ZiNanX_NTL 702668400@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \hrsaas\src\layout\components\Sidebar\Logo.vue
 -->
@@ -11,7 +11,7 @@
     <transition name="sidebarLogoFade">
       <router-link key="collapse" class="sidebar-logo-link" to="/">
         <img src="@/assets/common/节气5.png" class="sidebar-logo" />
-        <h1 class="sidebar-title">"掌上植保" 后台管理</h1>
+        <h1 class="sidebar-title">病虫害在线监测系统</h1>
       </router-link>
     </transition>
   </div>
@@ -59,18 +59,18 @@ export default {
     width: 100%;
     //大图logo样式
     & .sidebar-logo {
-      width: 45px;
+      width: 35px;
       vertical-align: middle;
-      margin-right: 12px;
+      margin-right: 5px;
     }
 
     & .sidebar-title {
       display: inline-block;
       margin: 0;
-      color: #fff;
+      color: #eff7ff;
       font-weight: 600;
       line-height: 50px;
-      font-size: 14px;
+      font-size: 16px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }

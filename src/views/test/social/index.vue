@@ -27,9 +27,7 @@
         @page-change="handlePageChange"
       >
         <template #header>
-          <el-button size="small" type="primary" @click="handleAdd">
-            新增
-          </el-button>
+          <el-button size="small" type="primary" @click="handleAdd"> 新增 </el-button>
         </template>
         <template #name="{ row }">
           {{ row.name === '春小麦' ? 'bb' : row.name }}
@@ -51,15 +49,15 @@
       </el-button> -->
       <el-button
         v-if="true"
-        style="position: absolute; top: 50%; right:0; z-index: 300"
+        style="position: absolute; top: 50%; right: 0; z-index: 300"
         @click="extent"
       >
         居中范围
       </el-button>
+      <!-- v-permission="[1]" -->
       <el-button
         v-if="true"
-        v-permission="[1]"
-        style="position: absolute; top:40%; right:0; z-index: 300"
+        style="position: absolute; top: 40%; right: 0; z-index: 300"
         @click="check"
       >
         查看
@@ -102,6 +100,7 @@ import pointList from '@/api/constant/testPoint'
 // import permission from '@/directives/permission/index'
 
 export default {
+  name: 'Social',
   components: {
     SearchForm,
     ZnTable,
@@ -285,7 +284,7 @@ export default {
       // document.querySelector(
       //   '#model>.el-dialog'
       // ).style.transformOrigin = `calc(${e.x}px - 50%) calc(${e.y}px - 15vh)`
-      const pjjlItem = modelConfig.find(item => item.prop === 'pjjl')
+      const pjjlItem = modelConfig.find((item) => item.prop === 'pjjl')
       pjjlItem && (pjjlItem.isHidden = true)
       // this.modelDefaultInfo = {}
       this.$refs.ZnModel.dialogVisible = true
@@ -294,7 +293,7 @@ export default {
     handleOperate(row, e) {
       this.$refs.ZnModel.positioningAnimation(e)
       // 控制表单项显示隐藏
-      const pjjlItem = modelConfig.find(item => item.prop === 'pjjl')
+      const pjjlItem = modelConfig.find((item) => item.prop === 'pjjl')
       pjjlItem && (pjjlItem.isHidden = false)
 
       this.modelDefaultInfo = { ...row }
@@ -391,7 +390,7 @@ export default {
           event: e,
           plantUrl: 'http://59.110.28.240:6080/arcgis/rest/services/nongken/nkjtGdzl/MapServer'
         })
-        .then(res => {
+        .then((res) => {
           if (res.length === 0) return console.warn('识别不到要素')
           if (this.edge) {
             this.map.removeLayer(this.edge)

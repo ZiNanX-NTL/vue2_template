@@ -18,9 +18,10 @@
       </div>
     </template>
     <sidebar v-if="pageLayout !== 'horizontalLayout'" class="sidebar-container" />
-    <div :class="mainContainerLayout">
+    <div :class="[mainContainerLayout, { hasTagsView: needTagsView }]">
       <div v-if="pageLayout === 'defaultLayout'" :class="{ 'fixed-header': fixedHeader }">
         <navbar />
+        <tags-view v-if="needTagsView" />
       </div>
       <app-main />
     </div>
@@ -28,7 +29,7 @@
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain } from './components'
+import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
@@ -36,7 +37,8 @@ export default {
   components: {
     Navbar,
     Sidebar,
-    AppMain
+    AppMain,
+    TagsView
   },
   mixins: [ResizeMixin],
   computed: {
@@ -51,6 +53,9 @@ export default {
     },
     pageLayout() {
       return this.$store.state.settings.pageLayout
+    },
+    needTagsView() {
+      return this.$store.state.settings.tagsView
     },
     classObj() {
       return {
@@ -125,5 +130,9 @@ export default {
 
 .mobile .fixed-header {
   width: 100%;
+}
+
+.hasTagsView .navbar {
+  box-shadow: 0 1px 4px rgb(0 21 41 / 8%);
 }
 </style>

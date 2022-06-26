@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 10:01:33
- * @LastEditTime: 2021-10-27 10:54:44
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-26 13:12:03
+ * @LastEditors: ZiNanX-NTL 702668400@qq.com
  * @Description: In User Settings Edit
  * @FilePath: \hrsaas\src\api\user.js
  */
@@ -10,7 +10,7 @@ import znRequest from '@/service'
 
 export function login(data) {
   // 返回一个axios对象 => promise  // 返回了一个promise对象
-  return znRequest.ZS_request.request({
+  return znRequest.request({
     url: '/webUser/login', // 因为所有的接口都要跨域 表示所有的接口要带 /api
     method: 'post',
     data,
@@ -24,6 +24,14 @@ export function login(data) {
         return res
       }
     }
+  })
+}
+
+// 退出登录
+export function loginOut() {
+  return znRequest.request({
+    url: '/login/loginOut',
+    method: 'post'
   })
 }
 

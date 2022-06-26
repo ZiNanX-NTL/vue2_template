@@ -8,7 +8,7 @@ import { Message } from 'element-ui'
 
 import { getTimeStamp } from '@/utils/auth'
 
-const TimeOut = 3600 // 定义超时时间
+const TimeOut = 60 * 60 // 定义超时时间(s)
 
 const znRequest = new ZNRequest({
   baseURL: BASE_URL,
@@ -21,7 +21,7 @@ const znRequest = new ZNRequest({
       // if (token) config.headers.Authorization = `Bearer ${token}`
       config.data = qs.stringify(config.data)
       // 在这个位置可能需要统一的去注入token
-      if (store.getters.token) {
+      if (store.getters.token && store.getters.token !== 'undefined') {
         // 只有在有token的情况下 才有必要去检查时间戳是否超时
         if (IsCheckTimeOut()) {
           // 如果它为true表示 过期了
@@ -29,6 +29,7 @@ const znRequest = new ZNRequest({
           store.dispatch('user/logout') // 登出操作
           // 跳转到登录页
           router.push('/login')
+          Message.error('token超时了')
           return Promise.reject(new Error('token超时了'))
         }
         console.log(config)
@@ -49,6 +50,10 @@ const znRequest = new ZNRequest({
         Message.error(Desc) // 提示错误消息
         return Promise.reject(new Error(Desc))
       }
+    },
+    responseInterceptorCatch(err) {
+      console.log('当前实例,响应拦截失败')
+      return Promise.reject(err)
     }
   }
 })
